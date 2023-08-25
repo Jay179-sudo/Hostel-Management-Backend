@@ -153,7 +153,6 @@ class StudentLoginSerializer(serializers.Serializer):
         return attrs
 
 
-# Pachi gayera overriden this one
 class LeaveSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255)
     password = serializers.CharField()
@@ -250,9 +249,8 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
 
             # send email
             body = "Click the following link to reset your password " + link
-            # data variable ma subject, body, ... diney
             data = {
-                "subject": "Rest Your Password",
+                "subject": "Reset Your Password",
                 "body": body,
                 "to_email": user.email,
             }
@@ -359,11 +357,22 @@ class UpdateHostelRoomAllocation(serializers.Serializer):
     room = serializers.CharField(max_length=10)
 
     def validate(self, attrs):
-        user = User.objects.get(email=self.initial_data["email"]).id
+        user = User.objects.get(email=self.initial_data["email"])
         hostelRoom = HostelRoom.objects.get(resident=user)
-        hostelRoom.hostel_room = attrs.get("room")
-        hostelRoom.save()
-        return attrs
+        hostel = Hostel.objects.get(name="BH1")
+        try:
+            alreadyOccupied = HostelRoom.objects.get(hostel_room=attrs.get("room"))
+        except:
+            HostelRoom.objects.filter(resident=user).delete()
+
+            hostel_room = HostelRoom(
+                Hostel=hostel, hostel_room=attrs.get("room"), resident=user
+            )
+            hostel_room.save()
+
+            return attrs
+
+        raise serializers.ValidationError("Room already occupied")
 
 
 class CreateHostelSerializer(serializers.Serializer):
@@ -467,7 +476,6 @@ class ListStudentsHostelToday(serializers.ModelSerializer):
 
 class csvSerializer(serializers.Serializer):
     csv = serializers.CharField()
-
 
     def validate(self, attrs):
         return attrs

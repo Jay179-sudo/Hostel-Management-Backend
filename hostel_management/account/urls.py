@@ -87,8 +87,6 @@ urlpatterns = [
         UpdateRoomAllocation.as_view(),
         name="hostel_admin_update_room",
     ),
-    # done FE
-    # yeslai change gara
     path("liststudentstoday/", ListStudentsPresentView.as_view(), name="list_students"),
     # ___________NEW URLS________________
     path("uploadcsv/", UploadCSV.as_view(), name="upload-csv"),  # done FE
@@ -105,14 +103,8 @@ urlpatterns = [
     path(
         "createabsentrecord/", createabsentrecord.as_view(), name="createabsentrecord"
     ),
-    # done FE
     path("getemailfromroom/", getRoomFromEmail.as_view(), name="get-room-from-email"),
     path("getroomdetails/", getRoomDetails.as_view(), name="get-room-details"),
-    # delete student from room -- done
-    # btw tyo user lai create garda tysko lai hostel room ni create gardeu if it doesnt exist already -- done
-    # room dincha give me email of the student staying here -- done
-    # leave request bata rejected shit hatau
-    # room details -- done
     path("occupiedRooms/", occupiedRooms.as_view(), name="occupied-rooms"),
     path("unoccupiedRooms/", unoccupiedRooms.as_view(), name="unoccupied-rooms"),
     path(
@@ -122,7 +114,6 @@ urlpatterns = [
     ),
     path("absenttoday/", AbsentToday.as_view(), name="Absent Today"),
     path("listleaverequests/", listLeaveRequests.as_view(), name="List Leave Requests"),
-    # get user type
     path("getusertype/", getsUserType.as_view(), name="get_user_type"),
     path("deleteAbsentRecord/", deleteAbsent.as_view(), name="delete-absent-record"),
     path("checkAbsentRecord/", checkAbsentRecord.as_view(), name="check-absent-record"),

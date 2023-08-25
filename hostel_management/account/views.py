@@ -172,9 +172,6 @@ class LeaveRegister(APIView):
         )
 
 
-# Login View
-
-
 class SuperAdminLoginView(APIView):
     def post(self, request, format=None):
         serializer = SuperAdminLoginSerializer(data=request.data)
@@ -282,18 +279,12 @@ class StudentLogin(APIView):
             return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 
-# Profile View
-
-
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-# Change password
 
 
 class UserChangePasswordView(APIView):
@@ -321,9 +312,6 @@ class SendPasswordResetEmail(APIView):
                 status=status.HTTP_200_OK,
             )
         # raise exception garey bhane no need to send a failure response, but failure response malai better way laagyo ngl
-
-
-# yo maathi ko change garna lai
 
 
 class UserPasswordResetView(APIView):
@@ -403,9 +391,6 @@ class ListStudentsPresentView(ListAPIView):
         return Student.objects.filter(Hostel=hostel)
 
 
-# _________________________NEW UPDATE______________________________
-
-
 class UploadCSV(APIView):
     # permission_classes = [IsAuthenticated]
 
@@ -428,7 +413,6 @@ class UploadCSV(APIView):
             )
 
 
-# ok
 class viewStudentsPresentYesterday(APIView):
     # permission_classes = [MessManagerOnly]
 
@@ -455,7 +439,6 @@ class viewStudentsPresentYesterday(APIView):
             )
 
 
-# chat
 from django.db.models import Count
 
 
@@ -515,7 +498,6 @@ class AbsentDaysView(APIView):
             )
 
 
-# checking absent record
 class checkAbsentRecord(APIView):
     def post(self, request, format=None):
         try:
@@ -541,7 +523,6 @@ class checkAbsentRecord(APIView):
             )
 
 
-# creating absent record
 class createabsentrecord(APIView):
     # permission_classes = [HostelAdminOnly]
 
@@ -586,7 +567,6 @@ class deleteAbsent(APIView):
             )
 
 
-# checking if absent today
 class AbsentToday(APIView):
     def get(self, request):
         try:
@@ -606,7 +586,6 @@ class AbsentToday(APIView):
             )
 
 
-# delete student from room
 class deletefromRoom(APIView):
     def post(self, request):
         serializer = deletefromRoomSerializer(data=request.data)
@@ -627,7 +606,6 @@ class deletefromRoom(APIView):
         )
 
 
-# get email of resident from room number
 class getRoomFromEmail(APIView):
     def post(self, request):
         room_number = request.data.get("room_number")
@@ -638,12 +616,12 @@ class getRoomFromEmail(APIView):
                 {"msg": "Request Failed. Please try again later!"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
         if hostel_room.resident:
             serializer = getEmailFromRoomSerializer(hostel_room.resident)
             return Response(serializer.data)
 
 
-# get room details from room number
 class getRoomDetails(APIView):
     def post(self, request):
         try:
@@ -662,7 +640,6 @@ class getRoomDetails(APIView):
             )
 
 
-# list of rooms that are occupied
 class unoccupiedRooms(APIView):
     def get(self, request, format=None):
         hostelRoom = HostelRoom.objects.filter(hostel_room=None)
@@ -671,7 +648,6 @@ class unoccupiedRooms(APIView):
         return Response(serializer.data)
 
 
-# list of rooms that are unoccupied
 class occupiedRooms(APIView):
     def get(self, request, format=None):
         hostelRoom = HostelRoom.objects.exclude(resident=None)
@@ -680,7 +656,6 @@ class occupiedRooms(APIView):
         return Response(serializer.data)
 
 
-# list of leave requests
 class listLeaveRequests(APIView):
     def post(self, request, format=None):
         start_date = request.data.get("start_date")
